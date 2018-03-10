@@ -120,7 +120,8 @@ echo -e "\033[0;31m\033[1m$(date) | #10 Install GeographicLib datasets\033[0m\03
 
 /home/pi/ros_catkin_ws/src/mavros/mavros/scripts/install_geographiclib_datasets.sh
 
-
+echo -e "\033[0;31m\033[1mAdd +1\033[0m\033[0m"
+sed -i 's/if abs(d) > 999999999:/if abs(d) > 1000000000:/' /usr/lib/python2.7/dist-packages/future/backports/datetime.py
 
 
 echo -e "\033[0;31m\033[1m$(date) | #11 Build light packages on 2 threads\033[0m\033[0m"
@@ -189,5 +190,6 @@ echo "source /opt/ros/kinetic/setup.bash" >> /home/pi/.bashrc \
 chown -Rf pi:pi /home/pi
 
 
-
+echo -e "\033[0;31m\033[1mAdd +1\033[0m\033[0m"
+sed -i 's/if abs(d) > 1000000000:/if abs(d) > 999999999:/' /usr/lib/python3.5/datetime.py /usr/lib/python2.7/dist-packages/future/backports/datetime.py
 echo -e "\033[0;31m\033[1m$(date) | #17 END of ROS INSTALLATION\033[0m\033[0m"

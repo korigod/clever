@@ -246,6 +246,9 @@ mount_system2() {
   echo -e "\033[0;31m\033[1mCopy DNS records\033[0m\033[0m"
   cp -L /etc/resolv.conf $2/etc/resolv.conf
 
+  echo -e "\033[0;31m\033[1mAdd +1\033[0m\033[0m"
+  sed -i 's/if abs(d) > 999999999:/if abs(d) > 1000000000:/' $2/usr/lib/python3.5/datetime.py
+
   echo -e "\033[0;31m\033[1m$(date) | Enter chroot\033[0m\033[0m"
   chroot $2 /bin/sh -c "$5"
 }
