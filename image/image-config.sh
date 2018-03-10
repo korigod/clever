@@ -205,7 +205,7 @@ mount_system() {
 mount_system2() {
 
   # STATIC
-  # TEMPLATE: mount_system2 $IMAGE $PREFIX_PATH $DEV_ROOTFS $DEV_BOOT $EXECUTE_FILE
+  # TEMPLATE: mount_system2 $IMAGE $PREFIX_PATH $DEV_ROOTFS $DEV_BOOT $EXECUTE_FILE $WORKSPACE
 
   echo -e "\033[0;31m\033[1mMount loop-image: $1\033[0m\033[0m"
   DEV_IMAGE=$(losetup -Pf $1 --show)
@@ -214,6 +214,11 @@ mount_system2() {
   echo -e "\033[0;31m\033[1mMount dirs $2 & $2/boot\033[0m\033[0m"
   mount $3 $2
   mount $4 $2/boot
+
+  echo -e "\033[0;31m\033[1mAdd qemu-interpretator\033[0m\033[0m"
+  if ! [ -f $2/usr/bin/qemu-arm-static ];
+  then cp $6/image/qemu-arm-orig $2/usr/bin/qemu-arm-static
+  fi
 
   echo -e "\033[0;31m\033[1mBind system dirs\033[0m\033[0m"
   echo "Mounting /proc in chroot... "
@@ -426,9 +431,9 @@ enter() {
 execute() {
 
   # STATIC
-  # TEMPLATE: execute $IMAGE $PREFIX_PATH $DEV_ROOTFS $DEV_BOOT $EXECUTE_FILE
+  # TEMPLATE: execute $IMAGE $PREFIX_PATH $DEV_ROOTFS $DEV_BOOT $EXECUTE_FILE $WORKSPACE
 
-  mount_system2 $1 $2 $3 $4 "$(cat $5)"
+  mount_system2 $1 $2 $3 $4 "$(cat $5)" $6
   umount_system2 $2
 }
 
@@ -487,8 +492,8 @@ case "$1" in
   publish_image2) # publish_image $BUILD_DIRECTORY $IMAGE_NAME $WORKSPACE $CONFIG_FILE $RELEASE_ID $RELEASE_BODY
     publish_image $2 $3 $4 $5 $6 $7;;
 
-  execute) # execute $IMAGE $PREFIX_PATH $DEV_ROOTFS $DEV_BOOT $EXECUTE_FILE
-    execute $2 $3 $4 $5 $6;;
+  execute) # execute $IMAGE $PREFIX_PATH $DEV_ROOTFS $DEV_BOOT $EXECUTE_FILE $WORKSPACE
+    execute $2 $3 $4 $5 $6 $7;;
 
   *)
     echo "Enter one of: enter, get_image, resize_fs, publish_image, execute";;
