@@ -113,8 +113,27 @@ sudo systemctl restart dhcpcd
 ```
 ## dhcp-server
 
+### dnsmasq
+
+```bash
+sudo apt install dnsmasq
+```
+
+```bash
+echo "
+interface=wlan0
+address=/clever/coex/192.168.11.1
+dhcp-range=192.168.11.100,192.168.11.200,12h
+no-hosts
+filterwin2k
+bogus-priv
+domain-needed
+quiet-dhcp6
+}" >> /etc/dnsmasq.conf
+```
+
 ### dnsmasq-base
-По умолчанию в Raspbian имеется dnsmasq-base - консольная утилита, не являющаяся службой.
+Можно использовать dnsmasq-base - консольная утилита, не являющаяся службой в отличие от dnsmasq.
 
 ```bash
 # Вызов dnsmasq-base
@@ -129,23 +148,9 @@ man dnsmasq
 
 ### isc-dhcp-server
 
-  ```bash
-  pi@raspberrypi:~ $ sudo apt-get install isc-dhcp-server
-  Reading package lists... Done
-  Building dependency tree       
-  Reading state information... Done
-  The following additional packages will be installed:
-  libirs-export141 libisccc-export140 libisccfg-export140 policycoreutils selinux-utils
-  Suggested packages:
-  policykit-1 isc-dhcp-server-ldap
-  The following NEW packages will be installed:
-  isc-dhcp-server libirs-export141 libisccc-export140 libisccfg-export140 policycoreutils selinux-utils
-  0 upgraded, 6 newly installed, 0 to remove and 0 not upgraded.
-  ```
-
-### dnsmasq
-
-TODO
+```bash
+sudo apt install isc-dhcp-server
+```
 
 ## References
 
@@ -162,4 +167,3 @@ TODO
 11. [weworkweplay.com: Automatically connect a Raspberry Pi to a Wifi network](http://weworkweplay.com/play/automatically-connect-a-raspberry-pi-to-a-wifi-network/) (Есть настройки для создания открытой точки доступа)
 12. [wiki.archlinux.org: WPA supplicant](https://wiki.archlinux.org/index.php/WPA%20supplicant)
 13. [wiki.archlinux.org: dhcpcd](https://wiki.archlinux.org/index.php/Dhcpcd#10-wpa_supplicant) (dhcpcd hook wpa_supplicant)
-
