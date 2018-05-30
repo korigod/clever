@@ -28,11 +28,7 @@ network={
         psk=\"cleverwifi\"
 }" > /etc/wpa_supplicant/wpa_supplicant.conf
 ```
-
-```
-SSID   = CLEVER
-PASSWD = cleverwifi
-```
+где `CLEVER` - название сети, а `cleverwifi` - пароль.
 
 **3. Перезагрузите службу dhcpcd**
 
