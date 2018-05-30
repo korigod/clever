@@ -43,8 +43,8 @@ update_config=1
 country=GB
 
 network={
-        ssid="CLEVER-SMIRNOV"
-        psk="cleverwifi"
+        ssid=\"CLEVER-SMIRNOV\"
+        psk=\"cleverwifi\"
         mode=2
         proto=RSN
         key_mgmt=WPA-PSK
