@@ -15,7 +15,7 @@ interface wlan0
 static ip_address=192.168.11.1/24
 ```
 
-> Если интерфейс является беспроводным (wlan), то служба `dhcpcd` триггерит `wpa_supplicant`, который в свою очередь работает непосредственно с wifi-адаптером и переводит его в заданное состояние.
+> Если интерфейс является беспроводным (wlan), то служба `dhcpcd` триггерит `wpa_supplicant` [13], который в свою очередь работает непосредственно с wifi-адаптером и переводит его в заданное состояние.
 
 ## wpa_supplicant
 **wpa_supplicant** - служба конфигурирует wifi-адаптер. Служба wpa_supplicant работает не как самостоятельная (хотя как таковая существует), а запускается как дочерний процесс от `dhcpcd`.
@@ -150,7 +150,7 @@ TODO
 ## References
 
 1. [habr.com: Linux WiFi из командной строки с wpa_supplicant](https://habr.com/post/315960/)
-2. [wiki.archlinux.org: WPA supplicant](https://wiki.archlinux.org/index.php/WPA_supplicant_(Русский))
+2. [wiki.archlinux.org: WPA supplicant (Русский)](https://wiki.archlinux.org/index.php/WPA_supplicant_(Русский))
 3. [blog.hoxnox.com: WiFi access point with wpa_supplicant](http://blog.hoxnox.com/gentoo/wifi-hotspot.html)
 4. [dmitrysnotes.ru: Raspberry Pi 3. Присвоение статического IP-адреса](http://dmitrysnotes.ru/raspberry-pi-3-prisvoenie-staticheskogo-ip-adresa)
 5. [thegeekdiary.com: Linux OS Service ‘network’](https://www.thegeekdiary.com/linux-os-service-network/)
@@ -160,3 +160,6 @@ TODO
 9. [expert-orda.ru: Настройка DHCP-сервера на Ubuntu](http://expert-orda.ru/posts/liuxnewbie/125--dhcp-ubuntu) (Настройка isc-dhcp-server)
 10. [academicfox.com: Raspberry Pi беспроводная точка доступа (WiFi access point)](http://academicfox.com/raspberry-pi-besprovodnaya-tochka-dostupa-wifi-access-point/) (Настройка маршрутов, hostapd, isc-dhcp-server)
 11. [weworkweplay.com: Automatically connect a Raspberry Pi to a Wifi network](http://weworkweplay.com/play/automatically-connect-a-raspberry-pi-to-a-wifi-network/) (Есть настройки для создания открытой точки доступа)
+12. [wiki.archlinux.org: WPA supplicant](https://wiki.archlinux.org/index.php/WPA%20supplicant)
+13. [wiki.archlinux.org: dhcpcd](https://wiki.archlinux.org/index.php/Dhcpcd#10-wpa_supplicant) (dhcpcd hook wpa_supplicant)
+
