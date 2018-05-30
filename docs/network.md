@@ -1,3 +1,97 @@
+# Настройка wiwi
+
+wifi-адаптер на дроне имеет два основных режима работы:
+1. Режим клиента, когда дрон подключается существующей wifi-сети.
+2. Режим точки доступа, когда дрон сам создает точку доступа, к которой Вы можете подключиться.
+
+По умолчанию wifi-адаптер настроен в режим точки доступа.
+
+## Инструкция для переключение адаптера в режим клиента
+
+**1. Включите получение ip-адреса на беспроводном интерфейсе dhcp-клиентом (отключите назначение статики)**
+
+```bash
+sudo sed -i 's/interface wlan0//' /etc/dhcpcd.conf
+sudo sed -i 's/static ip_address=192.168.11.1\/24//' /etc/dhcpcd.conf
+```
+
+**2. Настройте wpa_supplicant для подключения к существующей точке доступа**
+
+```bash
+echo "
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=GB
+
+network={
+        ssid=\"CLEVER\"
+        psk=\"cleverwifi\"
+}" > /etc/wpa_supplicant/wpa_supplicant.conf
+```
+
+```
+SSID   = CLEVER
+PASSWD = cleverwifi
+```
+
+**3. Перезагрузите службу dhcpcd**
+
+```bash
+sudo systemctl restart dhcpcd
+```
+
+**4. Выключите службу dnsmasq**
+
+```bash
+sudo systemctl stop dnsmasq
+sudo systemctl disable dnsmasq
+```
+
+## Инструкция для переключение адаптера в режим точки доступа
+
+**1. Включите статический ip-адрес на беспроводном интерфейсе**
+
+```bash
+echo "
+interface wlan0
+static ip_address=192.168.11.1\/24
+" >> /etc/dhcpcd.conf
+```
+
+**2. Настроите wpa_supplicant на работу в режиме точки доступа**
+
+```bash
+echo "
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=GB
+
+network={
+        ssid=\"CLEVER-$(head -c 100 /dev/urandom | xxd -ps -c 100 | sed -e 's/[^0-9]//g' | cut -c 1-4)\"
+        psk=\"cleverwifi\"
+        mode=2
+        proto=RSN
+        key_mgmt=WPA-PSK
+        pairwise=CCMP
+        group=CCMP
+        auth_alg=OPEN
+}" > /etc/wpa_supplicant/wpa_supplicant.conf
+```
+
+**3. Перезагрузите службу dhcpcd**
+
+```bash
+sudo systemctl restart dhcpcd
+```
+
+**4. Включите службу dnsmasq**
+
+```bash
+sudo systemctl enable dnsmasq
+sudo systemctl start dnsmasq
+```
+
+
 # Устройство сети RPi
 Работа сети на **2017-11-29-raspbian-stretch-lite** поддерживается двумя предустановленными службами:
 * **networking** - служба включает все сетевые интерфейсы в момент запуска [5].
