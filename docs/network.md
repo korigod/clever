@@ -113,6 +113,24 @@ sudo systemctl restart dhcpcd
 ```
 ## dhcp-server
 
+### dnsmasq-base
+`dnsmasq-base` - консольная утилита, не являющаяся службой, для использования dnsmasq как службы надо установить пакет `dnsmasq`.
+
+```bash
+sudo apt install dnsmasq-base
+```
+
+```bash
+# Вызов dnsmasq-base
+sudo dnsmasq --interface=wlan0 --address=/clever/coex/192.168.11.1 --no-daemon --dhcp-range=192.168.11.100,192.168.11.200,12h --no-hosts --filterwin2k --bogus-priv --domain-needed --quiet-dhcp6 --log-queries
+
+# Подробнее о dnsmasq-base
+dnsmasq --help
+
+# или
+man dnsmasq
+```
+
 ### dnsmasq
 
 ```bash
@@ -130,20 +148,6 @@ bogus-priv
 domain-needed
 quiet-dhcp6
 }" >> /etc/dnsmasq.conf
-```
-
-### dnsmasq-base
-Можно использовать dnsmasq-base - консольная утилита, не являющаяся службой в отличие от dnsmasq.
-
-```bash
-# Вызов dnsmasq-base
-sudo dnsmasq --interface=wlan0 --address=/clever/coex/192.168.11.1 --no-daemon --dhcp-range=192.168.11.100,192.168.11.200,12h --no-hosts --filterwin2k --bogus-priv --domain-needed --quiet-dhcp6 --log-queries
-
-# Подробнее о dnsmasq-base
-dnsmasq --help
-
-# или
-man dnsmasq
 ```
 
 ### isc-dhcp-server
