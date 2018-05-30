@@ -87,6 +87,9 @@ sudo systemctl enable dnsmasq
 sudo systemctl start dnsmasq
 ```
 
+___
+
+Ниже Вы можете узнать больше о том как устроена работа с сетью на RPi.
 
 # Устройство сети RPi
 Работа сети на **2017-11-29-raspbian-stretch-lite** поддерживается двумя предустановленными службами:
