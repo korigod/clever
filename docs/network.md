@@ -20,52 +20,6 @@ static ip_address=192.168.11.1/24
 ## wpa_supplicant
 **wpa_supplicant** - служба конфигурирует wifi-адаптер. Служба wpa_supplicant работает не как самостоятельная (хотя как таковая существует), а запускается как дочерний процесс от `dhcpcd` [13].
 
-```
-Aug 25 08:32:28 raspberrypi dhcpcd[342]: wlan0: starting wpa_supplicant
-Aug 25 08:32:28 raspberrypi dhcpcd-run-hooks[388]: wlan0: starting wpa_supplicant
-```
-
-```
-pi@clever-smirnov:~ $ systemctl status dhcpcd
-● dhcpcd.service - dhcpcd on all interfaces
-   Loaded: loaded (/lib/systemd/system/dhcpcd.service; enabled; vendor preset: enabled)
-  Drop-In: /etc/systemd/system/dhcpcd.service.d
-           └─wait.conf
-   Active: active (running) since Fri 2018-05-18 10:57:45 UTC; 1 weeks 4 days ago
-  Process: 341 ExecStart=/usr/lib/dhcpcd5/dhcpcd -q -w (code=exited, status=0/SUCCESS)
- Main PID: 498 (dhcpcd)
-   CGroup: /system.slice/dhcpcd.service
-           ├─444 wpa_supplicant -B -c/etc/wpa_supplicant/wpa_supplicant.conf -iwl
-           └─498 /sbin/dhcpcd -q -w
-```
-
-```(bash)
-pi@clever-smirnov:~ $ ps aux | grep wpa_supplicant
-root       444  0.0  0.3  10136  3552 ?        Ss   06:46   0:00 wpa_supplicant -B -c/etc/wpa_supplicant/wpa_supplicant.conf -iwlan0 -Dnl80211,wext
-```
-
-```
-pi@clever-smirnov:~ $ sudo find /etc -name "*wpa*" -exec file {} \;
-
-# /etc/wpa_supplicant/ifupdown.sh работает, если wpa_supplicant запущена как самостоятельная служба
-/etc/network/if-up.d/wpasupplicant: symbolic link to ../../wpa_supplicant/ifupdown.sh
-/etc/network/if-pre-up.d/wpasupplicant: symbolic link to ../../wpa_supplicant/ifupdown.sh
-/etc/network/if-down.d/wpasupplicant: symbolic link to ../../wpa_supplicant/ifupdown.sh
-/etc/network/if-post-down.d/wpasupplicant: symbolic link to ../../wpa_supplicant/ifupdown.sh
-
-# Action script to enable/disable wpa-roam interfaces in reaction to ifplugd events.
-/etc/ifplugd/action.d/action_wpa: symbolic link to ../../wpa_supplicant/action_wpa.sh
-/etc/wpa_supplicant/action_wpa.sh: POSIX shell script, ASCII text executable
-
-# Настройки и скрипты для запуска wpa_supplicant располагаются в папке /etc/wpa_supplicant
-/etc/wpa_supplicant: directory
-
-# Дефолтный конфигурационный файл
-/etc/wpa_supplicant/wpa_supplicant.conf: ASCII text
-
-/etc/dbus-1/system.d/wpa_supplicant.conf: exported SGML document, ASCII text
-```
-
 Конфиг запускаемый от `wpa_supplicant` который триггерится `dhcpcd`, должен иметь имя `wpa_supplicant.conf`. Внутри конфига указываются общие настройки и параметры для адаптера. Подробнее о синтаксисе `wpa_supplicant.conf` [TODO WIKI]
 
 Ниже, располагаются секции `network` - основные настройки wifi-сети такие как SSID, пароль, режим работы адаптера. Таких блоков может быть несколько, но используется первый рабочий. Например, если вы указали в первом блоке подключение к некоторой недоступной сети, то адаптер будет настроен следующей удачной секцией, если такая есть.
