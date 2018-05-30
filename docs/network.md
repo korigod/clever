@@ -152,6 +152,32 @@ man dnsmasq
 sudo apt install isc-dhcp-server
 ```
 
+```bash
+# https://www.shellhacks.com/ru/sed-find-replace-string-in-file/
+sed -i 's/INTERFACESv4=\"\"/INTERFACESv4=\"wlan0\"/' /etc/default/isc-dhcp-server
+```
+
+```bash
+echo "subnet 192.168.11.0 netmask 255.255.255.0 {
+  range 192.168.11.11 192.168.11.254;
+  #option domain-name-servers 8.8.8.8;
+  #option domain-name "rpi.local";
+  option routers 192.168.11.1;
+  option broadcast-address 192.168.11.255;
+  default-lease-time 600;
+  max-lease-time 7200;
+}" >> /etc/dhcp/dhcpd.conf
+```
+
+```bash
+echo "#!/bin/sh
+if [ \"\$IFACE\" = \"--all\" ];
+then sleep 10 && systemctl start isc-dhcp-server.service &
+fi
+" > /etc/network/if-up.d/isc-dhcp-server \
+  && chmod +x /etc/network/if-up.d/isc-dhcp-server
+```
+
 ## References
 
 1. [habr.com: Linux WiFi из командной строки с wpa_supplicant](https://habr.com/post/315960/)
